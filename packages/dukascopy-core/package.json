@@ -31,6 +31,7 @@
   ],
   "dependencies": {
     "fastest-validator": "^0.6.17",
+    "https-proxy-agent": "^4.0.0",
     "lzma-purejs": "^0.9.3",
     "node-fetch": "^2.3.0",
     "python-struct": "^1.0.6"

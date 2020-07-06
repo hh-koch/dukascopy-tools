@@ -1,6 +1,7 @@
 import { splitArrayInChunks, wait } from '../utils/general';
 import fetch from 'node-fetch';
 import { NotifyFn, BufferFetcherInput, BufferObject } from './types';
+import HttpsProxyAgent from 'https-proxy-agent'; 
 
 export class BufferFetcher {
   batchSize: number;
@@ -23,7 +24,8 @@ export class BufferFetcher {
   private async fetchBufferedData(urls: string[]): Promise<BufferObject[]> {
     return await Promise.all(
       urls.map(async url => {
-        const data = await fetch(url);
+        let proxyUrl = process.env["PROXY"]
+        const data = proxyUrl ? await fetch(url, {agent: new HttpsProxyAgent(proxyUrl)}) : await fetch(url);
         const buffer = await data.buffer();
         this.notifyOnItemFetchFn && this.notifyOnItemFetchFn(url);
         return { url, buffer };
